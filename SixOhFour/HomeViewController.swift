@@ -35,7 +35,6 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         
         fetchJobData()
-        
         toggleAddButton()
         
         tableView.reloadData()
@@ -59,18 +58,13 @@ class HomeViewController: UIViewController {
             let destinationVC = segue.destinationViewController as! AddJobTableViewController
             destinationVC.hidesBottomBarWhenPushed = true;
             
-        }
-        
-        if segue.identifier == "jobOverview" {
+        } else if segue.identifier == "jobOverview" {
             let destinationVC = segue.destinationViewController as! JobOverviewViewController
             destinationVC.hidesBottomBarWhenPushed = true;
             
-            println(job)
             destinationVC.job = self.job
         }
-        
     }
-    
 }
 
 

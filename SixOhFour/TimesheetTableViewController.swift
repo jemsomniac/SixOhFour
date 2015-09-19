@@ -25,11 +25,12 @@ class TimesheetTableViewController: UITableViewController {
     var endDate: NSDate!
     var startDateMidnight: NSDate!
     var endDateMidnightNextDay: NSDate!
-    var dataManager = DataManager()
     var allWorkedShifts = [WorkedShift]()
     var selectedJob : Job!
     var openShiftsCIs = [Timelog]()
 
+    let dataManager = DataManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.reloadData()
@@ -45,20 +46,18 @@ class TimesheetTableViewController: UITableViewController {
         startDatePicker.maximumDate = NSDate()
         endDatePicker.maximumDate = NSDate()
 
-        
         datePickerChanged(startDetailLabel, datePicker: startDatePicker)
 
         tableView.dataSource = self
         tableView.delegate = self
         
-        
-        calcWorkTime()
+        calculateWorkTime()
         calculatePayDaysAgo()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        calcWorkTime()
+        calculateWorkTime()
         calculatePayDaysAgo()
     }
 
@@ -80,7 +79,6 @@ class TimesheetTableViewController: UITableViewController {
     
     @IBAction func individualButton(sender: AnyObject) {
         self.performSegueWithIdentifier("showIndividual", sender: self)
-        
     }
     
     @IBAction func unwindShift (segue: UIStoryboardSegue) {
@@ -120,7 +118,7 @@ class TimesheetTableViewController: UITableViewController {
             startDate = startDatePicker.date
         }
         
-        calcWorkTime()
+        calculateWorkTime()
         calculatePayDaysAgo()
     }
     
@@ -161,7 +159,7 @@ class TimesheetTableViewController: UITableViewController {
         return date2!
     }
     
-    func calcWorkTime() {
+    func calculateWorkTime() {
         
         var totalTime = 0.0
         var regTotalTime = 0.0

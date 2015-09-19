@@ -9,8 +9,6 @@
 import UIKit
 
 class DayCellTableViewCell: UITableViewCell {
-
-    var dataManager = DataManager()
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
@@ -24,10 +22,10 @@ class DayCellTableViewCell: UITableViewCell {
         }
     }
     
-    var clockInTL: Timelog! {
+    var clockInTimelog: Timelog! {
         didSet {
-            dateLabel.text = NSDateFormatter.localizedStringFromDate( (clockInTL.time) ,dateStyle: .LongStyle,  timeStyle: .NoStyle)
-            timeLabel.text = "Clocked in at \(NSDateFormatter.localizedStringFromDate( (clockInTL.time) ,dateStyle: .NoStyle,  timeStyle: .MediumStyle))"
+            dateLabel.text = NSDateFormatter.localizedStringFromDate( (clockInTimelog.time) ,dateStyle: .LongStyle,  timeStyle: .NoStyle)
+            timeLabel.text = "Clocked in at \(NSDateFormatter.localizedStringFromDate( (clockInTimelog.time) ,dateStyle: .NoStyle,  timeStyle: .MediumStyle))"
         }
     }
     

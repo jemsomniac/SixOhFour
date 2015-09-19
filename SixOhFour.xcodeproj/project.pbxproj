@@ -219,7 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				B9E34BC71B508C8800B9FD88 /* Main */,
-				B9E34BBB1B5089F600B9FD88 /* Home */,
+				B9E34BBB1B5089F600B9FD88 /* Job */,
 				B9E34BBF1B508A8900B9FD88 /* Clockin */,
 				B9E34BC31B508AB500B9FD88 /* Calendar */,
 				874FACF71B33A9D7002EABB0 /* AppDelegate.swift */,
@@ -256,6 +256,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		B971566A1BACFDB200792CE5 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				87B7C1851B69C22800C65C96 /* Job.swift */,
+				87B7C18F1B69C91D00C65C96 /* Color.swift */,
+				87B7C1831B69C22800C65C96 /* Company.swift */,
+				87B7C1811B69C22800C65C96 /* UserPreferences.swift */,
+				87B7C1871B69C22800C65C96 /* RepeatingSchedule.swift */,
+				87B7C1891B69C22800C65C96 /* Reminders.swift */,
+				87B7C18D1B69C22800C65C96 /* Timelog.swift */,
+				87B7C17F1B69C22700C65C96 /* WorkedShift.swift */,
+				87B7C18B1B69C22800C65C96 /* ScheduledShift.swift */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		B9CF32731B6B046800757E43 /* CVCalendar */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,7 +305,7 @@
 			path = CVCalendar;
 			sourceTree = "<group>";
 		};
-		B9E34BBB1B5089F600B9FD88 /* Home */ = {
+		B9E34BBB1B5089F600B9FD88 /* Job */ = {
 			isa = PBXGroup;
 			children = (
 				B9E34BBC1B508A0E00B9FD88 /* Model */,
@@ -297,20 +313,12 @@
 				B9E34BBE1B508A4400B9FD88 /* View Controllers */,
 				87238A451B3E25AA004D44CA /* AddJobStoryboard.storyboard */,
 			);
-			name = Home;
+			name = Job;
 			sourceTree = "<group>";
 		};
 		B9E34BBC1B508A0E00B9FD88 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				87B7C18D1B69C22800C65C96 /* Timelog.swift */,
-				87B7C1891B69C22800C65C96 /* Reminders.swift */,
-				87B7C1871B69C22800C65C96 /* RepeatingSchedule.swift */,
-				87B7C1831B69C22800C65C96 /* Company.swift */,
-				87B7C1811B69C22800C65C96 /* UserPreferences.swift */,
-				87B7C17F1B69C22700C65C96 /* WorkedShift.swift */,
-				87B7C1851B69C22800C65C96 /* Job.swift */,
-				87B7C18F1B69C91D00C65C96 /* Color.swift */,
 				879277021B588B2C0023CBA6 /* PayRate.swift */,
 			);
 			name = Model;
@@ -417,7 +425,6 @@
 		B9E34BC61B508AD200B9FD88 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				87B7C18B1B69C22800C65C96 /* ScheduledShift.swift */,
 				B9E31D1B1B7C24CF008CF7DC /* RepeatWeekly.swift */,
 				B9E31D1D1B7C25DF008CF7DC /* RepeatMonthly.swift */,
 				B9E31D211B7C27A5008CF7DC /* RepeatSettings.swift */,
@@ -428,6 +435,7 @@
 		B9E34BC71B508C8800B9FD88 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				B971566A1BACFDB200792CE5 /* CoreData */,
 				B9920E681B3B711A0037B44B /* MainTabBarController.swift */,
 				874FACFE1B33A9D7002EABB0 /* Main.storyboard */,
 				B9BC3D701B74465E00DAF347 /* DataManager.swift */,

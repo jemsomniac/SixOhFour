@@ -25,20 +25,15 @@ class JobOverviewViewController: UIViewController {
     @IBOutlet weak var yearToDateLabel: UILabel!
     
     var editButton: UIBarButtonItem!
-    var jobs = [Job]()
     var job: Job!
-    var company: Company!
-    var timelog: Timelog!
-    var workedshift: WorkedShift!
-    var allWorkedShifts = [WorkedShift]()
-    var selectedDate: NSDate!
     var monthSchedule: [ScheduledShift]!
-    var daySchedule: [ScheduledShift]!
-    var shift: ScheduledShift!
-    var shouldShowDaysOut = true
+
+    var jobs = [Job]()
+    var allWorkedShifts = [WorkedShift]()
     var animationFinished = true
     var currentMonth = CVDate(date: NSDate()).currentMonth
-    var dataManager = DataManager()
+    
+    let dataManager = DataManager()
     
 
     override func viewDidLoad() {
@@ -59,12 +54,13 @@ class JobOverviewViewController: UIViewController {
         nameLabel.text = job.company.name
         positionLabel.text = job.position
         payLabel.text = "\(numberFormatter.stringFromNumber(pay)!)/hr"
-        fetchData()
+       
+        runCalculations()
     }
     
     override func viewWillAppear(animated: Bool) {
         self.hidesBottomBarWhenPushed = true
-        fetchData()
+        runCalculations()
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,15 +75,14 @@ class JobOverviewViewController: UIViewController {
         menuView.commitMenuViewUpdate()
     }
     
-    func fetchData() {
-        jobs = dataManager.fetch("Job") as! [Job]
-        calcWorkTime7Days()
+    func runCalculations() {
+        calculateWorkTime7Days()
         calculatePayDaysAgo(7, labelName: weekEarningLabel)
         calculatePayDaysAgo(30, labelName: lastThirtyDaysLabel)
         calculatePayYearToDate(yearToDateLabel)
     }
 
-    func calcWorkTime7Days() {
+    func calculateWorkTime7Days() {
         
         var totalTime = 0.0
         var regTotalTime = 0.0
@@ -179,11 +174,6 @@ class JobOverviewViewController: UIViewController {
         labelName.text = "$\(totalPay)"
     }
     
-    
-    func calculateRegHours() {
-        regularHoursLabel.text = "\(workedshift.duration)"
-    }
-    
     func editJob() {
         self.performSegueWithIdentifier("editJob", sender: self)
     }
@@ -195,9 +185,7 @@ class JobOverviewViewController: UIViewController {
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: nil, action: nil)
             destinationVC.hidesBottomBarWhenPushed = true
             destinationVC.job = self.job
-        }
-        
-        if segue.identifier == "showTimesheet" {
+        } else if segue.identifier == "showTimesheet" {
             let destinationVC = segue.destinationViewController as! TimesheetTableViewController
             
             destinationVC.hidesBottomBarWhenPushed = true
@@ -221,10 +209,6 @@ extension JobOverviewViewController: CVCalendarViewDelegate {
     
     func shouldShowWeekdaysOut() -> Bool {
         return true
-    }
-    
-    func didSelectDayView(dayView: CVCalendarDayView) {
-  
     }
     
     func presentedDateUpdated(date: CVDate) {
@@ -329,20 +313,6 @@ extension JobOverviewViewController: CVCalendarViewDelegate {
     func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
         return false
     }
-}
-
-
-// MARK: - CVCalendarViewAppearanceDelegate
-
-extension JobOverviewViewController: CVCalendarViewAppearanceDelegate {
-    func dayLabelPresentWeekdayInitallyBold() -> Bool {
-        return false
-    }
-    
-    func spaceBetweenDayViews() -> CGFloat {
-        return 2
-    }
-    
 }
 
 

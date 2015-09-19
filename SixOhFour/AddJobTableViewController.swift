@@ -74,11 +74,9 @@ class AddJobTableViewController: UITableViewController {
         } else {
             colorLabel.text = selectedColor.name
             jobColorView.color = colors[0].getColor
-
         }
         
         toggleSaveButton()
-
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -113,9 +111,9 @@ class AddJobTableViewController: UITableViewController {
         }
         
         if job != nil {
-            editItem()
+            editJob()
         } else {
-            newItem()
+            addJob()
         }
         navigationController?.popToRootViewControllerAnimated(true)
     }
@@ -164,7 +162,7 @@ class AddJobTableViewController: UITableViewController {
         payTextField.text = formatter.stringFromNumber(numberFromField)
     }
     
-    func newItem() {
+    func addJob() {
         
         let color = dataManager.editItem(selectedColor, entityName: "Color") as! Color
         color.isSelected = true
@@ -181,7 +179,7 @@ class AddJobTableViewController: UITableViewController {
         dataManager.save()
     }
     
-    func editItem() {
+    func editJob() {
         
         let previous = dataManager.editItem(previousColor, entityName: "Color") as! Color
         previous.isSelected = false
