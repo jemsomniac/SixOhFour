@@ -54,7 +54,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
     
     var jobListEmpty = true
     
-    //Variables for Segue: "showDetails"
+    // Variables for Segue: "showDetails"
     var nItemClockIn : Timelog!
     var nItemClockInPrevious : Timelog!
     var nItemClockInNext : Timelog!
@@ -62,7 +62,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
     var noMinDate = false
     var noMaxDate = false
     
-    var timelogList = [Timelog]()
+    var timelogs = [Timelog]()
     var timelogTimestamp: [NSDate] = []
     var timelogDescription: [String] = []
     
@@ -92,6 +92,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        
         if jobListEmpty {
             startStopButton.enabled = false
             workTimeLabel.textColor = UIColor.grayColor()
@@ -104,7 +105,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
         
         if selectedJob == nil || !contains(jobsList, selectedJob) { // NOTE: SELECTS THE FIRST JOB WHEN APP IS LOADED
             if jobsList.count > 0 {
-                //Fetches the first jobs
+                //Fetches the first job
                 var firstJob = jobsList[0]
                 jobTitleDisplayLabel.text = firstJob.company.name
                 jobTitleDisplayLabel.textColor = UIColor.blackColor()
@@ -266,7 +267,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
             
             timelogTimestamp.removeAll(keepCapacity: false)
             timelogDescription.removeAll(keepCapacity: false)
-            timelogList = []
+            timelogs = []
             updateTable()
             
             workTitleLabel.text = " "
@@ -329,7 +330,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
                 currentWorkedShift.status = 0 // 2=running, 1=incomplete, 0=complete
             }
         }
-        timelogList.append(newTimelog)
+        timelogs.append(newTimelog)
         currentWorkedShift.sumUpDuration()
         saveWorkedShiftToJob()
     }
@@ -348,7 +349,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
     func appendToTimeTableView() {
         timelogTimestamp.append(NSDate())
         updateTable()
-        var indexPathScroll = NSIndexPath(forRow: timelogList.count, inSection: 0)
+        var indexPathScroll = NSIndexPath(forRow: timelogs.count, inSection: 0)
         self.lapsTableView.scrollToRowAtIndexPath(indexPathScroll, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
     }
     
@@ -579,7 +580,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
         let sourceVC = segue.sourceViewController as! JobsListTableViewController
         selectedJob = sourceVC.selectedJob
         
-        if timelogList.count > 0 {
+        if timelogs.count > 0 {
             currentWorkedShift.job = selectedJob
         }
         updateTable()
@@ -603,7 +604,7 @@ class ClockInViewController: UIViewController, UIPopoverPresentationControllerDe
             jobColorDisplay.color = selectedJob.color.getColor
         }
         
-        if timelogList != [] {
+        if timelogs != [] {
             saveWorkedShiftToJob()
         }
         
@@ -666,7 +667,7 @@ extension ClockInViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("TimelogCell", forIndexPath: indexPath) as! TimelogCell
         
-        cell.timelog = timelogList[indexPath.row]
+        cell.timelog = timelogs[indexPath.row]
         cell.jobColorView.color = selectedJob.color.getColor
         cell.jobColorView.setNeedsDisplay()
         
@@ -684,7 +685,7 @@ extension ClockInViewController: UITableViewDelegate, UITableViewDataSource {
         header.textLabel.textAlignment = NSTextAlignment.Justified
         header.textLabel.text = "Entries for the shift"
         
-        if timelogList.count == 0 {
+        if timelogs.count == 0 {
             header.textLabel.hidden = true
         } else {
             header.textLabel.hidden = false
@@ -699,21 +700,21 @@ extension ClockInViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        nItemClockIn = timelogList[indexPath.row] // send up actual
+        nItemClockIn = timelogs[indexPath.row] // send up actual
         selectedRowIndex = indexPath.row
         
         if (indexPath.row) == 0 {
             noMinDate = true // user select CLOCKIN so noMinDate
         } else {
             noMinDate = false
-            self.nItemClockInPrevious = timelogList[indexPath.row - 1]
+            self.nItemClockInPrevious = timelogs[indexPath.row - 1]
         }
         
-        if (timelogList.count - indexPath.row - 1) == 0 {
+        if (timelogs.count - indexPath.row - 1) == 0 {
             noMaxDate = true //user select last TIMELOD so noMaxDat is sent, and will use NSDATE instead
         } else {
             noMaxDate = false
-            self.nItemClockInNext = timelogList[indexPath.row + 1]
+            self.nItemClockInNext = timelogs[indexPath.row + 1]
         }
         
         self.performSegueWithIdentifier("showDetails", sender: tableView.cellForRowAtIndexPath(indexPath))
