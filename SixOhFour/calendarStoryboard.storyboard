@@ -198,7 +198,7 @@
                     <navigationItem key="navigationItem" title="Calendar" id="lp4-eS-Eug">
                         <barButtonItem key="rightBarButtonItem" image="Plus" id="t0x-tI-WZP">
                             <connections>
-                                <segue destination="uW5-in-xzW" kind="show" identifier="addScheduleSegue" id="Mon-fb-5xO"/>
+                                <action selector="addButtonPressed:" destination="mcG-89-bFu" id="47G-KD-uB7"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -212,6 +212,7 @@
                         <outlet property="tableView" destination="tI3-2L-tHe" id="yZ2-Z4-hgv"/>
                         <outlet property="todayLabel" destination="Ql2-qb-PYV" id="dFZ-qC-1cs"/>
                         <segue destination="uW5-in-xzW" kind="show" identifier="editSchedule" id="7lv-qF-2DV"/>
+                        <segue destination="uW5-in-xzW" kind="show" identifier="addScheduleSegue" id="1XO-nS-yVl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7pZ-e6-UYL" sceneMemberID="firstResponder"/>
@@ -1185,6 +1186,6 @@
         <image name="rightArrow" width="9" height="14"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7lv-qF-2DV"/>
+        <segue reference="1XO-nS-yVl"/>
     </inferredMetricsTieBreakers>
 </document>

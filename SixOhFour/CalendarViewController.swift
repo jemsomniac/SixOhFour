@@ -19,6 +19,7 @@ class CalendarViewController: UIViewController {
     
     var todayButton: UIBarButtonItem!
     var selectedDate: NSDate!
+    var monthWorkedShifts: [WorkedShift]!
     var monthSchedule: [ScheduledShift]!
     var daySchedule: [ScheduledShift]!
     var shift: ScheduledShift!
@@ -99,7 +100,32 @@ class CalendarViewController: UIViewController {
         isMonthView = !isMonthView
     }
     
+    @IBAction func addButtonPressed(sender: AnyObject) {
+        var today = NSDate()
+        let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+        let components = (NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay)
         
+        let selectedDateComponents = calendar.components(components, fromDate: selectedDate)
+        let todayComponents = calendar.components(components, fromDate: today)
+        
+        today = calendar.dateFromComponents(todayComponents)!
+        let dateToCompare = calendar.dateFromComponents(selectedDateComponents)
+        
+        if dateToCompare!.compare(today) == NSComparisonResult.OrderedAscending {
+            let clockInStoryboard: UIStoryboard = UIStoryboard(name: "ClockInStoryboard", bundle: nil)
+            let addWorkedShiftVC: AddShiftViewController = clockInStoryboard.instantiateViewControllerWithIdentifier("AddShiftViewController")
+                as! AddShiftViewController
+            
+            let results = dataManager.fetch("Job")
+            
+            addWorkedShiftVC.selectedJob = results[0] as! Job
+            
+            self.navigationController?.pushViewController(addWorkedShiftVC, animated: true)
+        } else {
+            self.performSegueWithIdentifier("addScheduleSegue", sender: self)
+        }
+    }
+    
     @IBAction func unwindAfterSaveSchedule(segue: UIStoryboardSegue) {
         calendarView.toggleViewWithDate(selectedDate)
     }
@@ -173,6 +199,7 @@ class CalendarViewController: UIViewController {
             destinationVC.endTime = self.selectedDate
             destinationVC.isNewSchedule = true
         }
+        
         
         if segue.identifier == "editSchedule" {
             let destinationVC = segue.destinationViewController as! AddScheduleTableViewController
@@ -366,7 +393,6 @@ extension CalendarViewController: CVCalendarViewDelegate {
         updateDaySchedule(selectedDay)
         
         selectedDate = dayView.date.convertedDate()
-        toggleAddButton()
 
         tableView.reloadData()
     }
