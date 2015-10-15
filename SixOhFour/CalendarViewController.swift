@@ -127,7 +127,7 @@ class CalendarViewController: UIViewController {
     }
     
     @IBAction func unwindAfterSaveSchedule(segue: UIStoryboardSegue) {
-        calendarView.toggleViewWithDate(selectedDate)
+        calendarView.reloadMonthView(selectedDate)
     }
     
     
@@ -298,6 +298,7 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
                     self.daySchedule.removeAtIndex(indexPath.row)
                     self.fetchMonthSchedule()
                     tableView.deleteRowsAtIndexPaths([indexPath],  withRowAnimation: .Automatic)
+                    self.calendarView.reloadMonthView(self.selectedDate)
                 }
                 
                 let start = formatter.stringFromDate(shiftToDelete.startTime)
@@ -330,6 +331,7 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
                         self.daySchedule.removeAtIndex(indexPath.row)
                         self.fetchMonthSchedule()
                         tableView.deleteRowsAtIndexPaths([indexPath],  withRowAnimation: .Automatic)
+                        self.calendarView.reloadMonthView(self.selectedDate)
                     }
                 
                     alertController.addAction(deleteFuture)
@@ -346,6 +348,7 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
                 self.daySchedule.removeAtIndex(indexPath.row)
                 self.fetchMonthSchedule()
                 tableView.deleteRowsAtIndexPaths([indexPath],  withRowAnimation: .Automatic)
+                self.calendarView.reloadMonthView(self.selectedDate)
             }
         
             let cancel = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
@@ -394,6 +397,7 @@ extension CalendarViewController: CVCalendarViewDelegate {
         
         selectedDate = dayView.date.convertedDate()
 
+        dayView.circleView?.setNeedsDisplay()
         tableView.reloadData()
     }
     
@@ -466,14 +470,27 @@ extension CalendarViewController: CVCalendarViewDelegate {
         let predicate = NSPredicate(format: "startDate == %@", day)
         let results = dataManager.fetch("ScheduledShift", predicate: predicate) as! [ScheduledShift]
         
+//        if results.count == 2 {
+//            return [color, color]
+//        } else if results.count >= 3 {
+//            return [color, color, color]
+//        } else {
+//            return [color]
+//        }
         
-        if results.count == 2 {
-            return [color, color]
-        } else if results.count >= 3 {
-            return [color, color, color]
-        } else {
-            return [color]
+        var colors = [UIColor]()
+        var count = 0
+        
+        for shift in results {
+            colors.append(shift.job.color.getColor)
+            
+            count++
+            if count == 3 {
+                break
+            }
         }
+        
+        return colors
     }
     
     func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
