@@ -470,6 +470,7 @@ extension CalendarViewController: CVCalendarViewDelegate {
         let predicate = NSPredicate(format: "startDate == %@", day)
         let results = dataManager.fetch("ScheduledShift", predicate: predicate) as! [ScheduledShift]
         
+        // TODO: DELETE IF SWITCHING TO COLORS
 //        if results.count == 2 {
 //            return [color, color]
 //        } else if results.count >= 3 {
